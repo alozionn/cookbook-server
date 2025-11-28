@@ -1,13 +1,16 @@
-# --- Build stage ---
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /src
-COPY . .
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /App
 
-# --- Runtime stage ---
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
-WORKDIR /app
-COPY --from=build /app .
-EXPOSE 8080
-ENTRYPOINT ["dotnet", "Cookbook.Server.dll"]
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -o out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /App
+COPY --from=build /App/out .
+# ENTRYPOINT ["dotnet", "Cookbook.Server.dll"]
+ENTRYPOINT ["dotnet", "cookbook-server.dll"]
