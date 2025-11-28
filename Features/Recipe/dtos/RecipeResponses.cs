@@ -8,3 +8,9 @@ public class RecipeResponse
     // public List<string> Ingredients { get; set; }
     // public List<string> Instructions { get; set; }
 }
+
+public class CreateRecipeResponse
+{
+    public required int Id { get; set; }
+    public required string Name { get; set; }
+}

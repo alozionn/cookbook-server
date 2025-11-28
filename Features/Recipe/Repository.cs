@@ -20,4 +20,19 @@ public class RecipesRepository
             })
             .ToListAsync(ct);
     }
+
+    public async Task<CreateRecipeResponse> CreateAsync(RecipeRequest req, CancellationToken ct)
+    {
+        var recipe = new Recipe
+        {
+            Name = req.Name,
+            Description = req.Description,
+            Category = req.Category,
+        };
+        await _dbContext.Recipes.AddAsync(recipe, ct);
+
+        await _dbContext.SaveChangesAsync(ct);
+
+        return new CreateRecipeResponse { Id = recipe.Id, Name = recipe.Name };
+    }
 }
