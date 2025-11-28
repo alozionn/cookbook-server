@@ -1,6 +1,3 @@
-using FastEndpoints;
-using Microsoft.EntityFrameworkCore;
-
 public class GetRecipesList : EndpointWithoutRequest<List<RecipeResponse>>
 {
     private readonly AppDbContext _context;

@@ -1,5 +1,4 @@
 global using FastEndpoints;
-global using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var app = builder.Build();
 app.UseFastEndpoints();
 app.Run();
+
 // robust api setup example: https://github.com/erwinkramer/bank-api/tree/main?tab=readme-ov-file#bank-api-
 // https://dev.to/djnitehawk/building-rest-apis-in-net-6-the-easy-way-3h0d
 // https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-9-0
