@@ -1,8 +1,8 @@
-public class GetRecipesList : EndpointWithoutRequest<List<RecipeResponse>>
+public class GetRecipeList : EndpointWithoutRequest<List<RecipeResponse>>
 {
     private readonly AppDbContext _context;
 
-    public GetRecipesList(AppDbContext context)
+    public GetRecipeList(AppDbContext context)
     {
         _context = context;
     }

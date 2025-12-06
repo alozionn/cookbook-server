@@ -1,4 +1,4 @@
-public class CreateRecipe : Endpoint<RecipeRequest, CreateRecipeResponse>
+public class CreateRecipe : EndpointWithMapping<CreateRecipeRequest, CreateRecipeResponse, Recipe>
 {
     private readonly AppDbContext _context;
 
@@ -15,10 +15,23 @@ public class CreateRecipe : Endpoint<RecipeRequest, CreateRecipeResponse>
         AllowAnonymous(); //TODO: refactor when auth is added
     }
 
-    public override async Task HandleAsync(RecipeRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CreateRecipeRequest req, CancellationToken ct)
     {
-        var recipe = await RecipesRepository.CreateAsync(req, ct);
+        Recipe entity = MapToEntity(req);
+        var recipe = await RecipesRepository.CreateAsync(entity, ct);
 
-        await Send.OkAsync(recipe);
+        Response = MapFromEntity(recipe);
+        await Send.OkAsync(Response);
     }
+
+    public override Recipe MapToEntity(CreateRecipeRequest r) =>
+        new()
+        {
+            Name = r.Name,
+            Description = r.Description,
+            Category = r.Category,
+        };
+
+    public override CreateRecipeResponse MapFromEntity(Recipe e) =>
+        new() { Id = e.Id, Name = e.Name };
 }

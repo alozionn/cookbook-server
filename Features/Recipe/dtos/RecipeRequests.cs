@@ -1,4 +1,4 @@
-public class RecipeRequest
+public class CreateRecipeRequest
 {
     public required string Name { get; set; }
     public required string Description { get; set; }
