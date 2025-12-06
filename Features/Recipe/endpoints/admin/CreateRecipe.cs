@@ -11,7 +11,7 @@ public class CreateRecipe : EndpointWithMapping<CreateRecipeRequest, CreateRecip
 
     public override void Configure()
     {
-        Post("/recipes");
+        Post("/admin/recipes");
         AllowAnonymous(); //TODO: refactor when auth is added
     }
 

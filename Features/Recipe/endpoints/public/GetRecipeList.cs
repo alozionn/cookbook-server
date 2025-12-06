@@ -11,7 +11,7 @@ public class GetRecipeList : EndpointWithoutRequest<List<RecipeResponse>>
 
     public override void Configure()
     {
-        Get("/recipes");
+        Get("/public/recipes");
         AllowAnonymous();
     }
 
