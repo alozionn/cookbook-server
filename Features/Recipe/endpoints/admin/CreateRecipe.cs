@@ -1,3 +1,20 @@
+public class CreateRecipeRequest
+{
+    public required string Name { get; set; }
+    public required string Description { get; set; }
+    public required string Category { get; set; }
+
+    // public string imageUrl { get; set; }
+    // public List<string> Ingredients { get; set; }
+    // public List<string> Instructions { get; set; }
+}
+
+public class CreateRecipeResponse
+{
+    public required int Id { get; set; }
+    public required string Name { get; set; }
+}
+
 public class CreateRecipe : EndpointWithMapping<CreateRecipeRequest, CreateRecipeResponse, Recipe>
 {
     private readonly AppDbContext _context;
@@ -6,8 +23,6 @@ public class CreateRecipe : EndpointWithMapping<CreateRecipeRequest, CreateRecip
     {
         _context = context;
     }
-
-    public RecipesRepository RecipesRepository => new RecipesRepository(_context);
 
     public override void Configure()
     {
@@ -18,9 +33,12 @@ public class CreateRecipe : EndpointWithMapping<CreateRecipeRequest, CreateRecip
     public override async Task HandleAsync(CreateRecipeRequest req, CancellationToken ct)
     {
         Recipe entity = MapToEntity(req);
-        var recipe = await RecipesRepository.CreateAsync(entity, ct);
 
-        Response = MapFromEntity(recipe);
+        await _context.Recipes.AddAsync(entity, ct);
+
+        await _context.SaveChangesAsync(ct);
+
+        Response = MapFromEntity(entity);
         await Send.OkAsync(Response);
     }
 
